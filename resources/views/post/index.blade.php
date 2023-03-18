@@ -21,8 +21,12 @@
         <td>{{$post["created_at"]}}</td>
         <td>
             <a class="btn btn-success" href="{{route("posts.show",$post["id"])}}">view</a>
-            <a class="btn btn-primary" href="{{route("posts.edit",$post["id"]),"/edit"}}">edit</a>
-            <a class="btn btn-danger" href="">delete</a>
+            <a class="btn btn-primary" href="{{route("posts.edit",$post["id"])}}">edit</a>
+            <form method="post" action="{{route("posts.destroy",$post["id"])}}" style="display:inline-block;;">
+                @csrf
+                @method("DELETE")
+                <x-button color="danger" value="delete"/>
+            </form> 
         </td>
         @endforeach
         </tr>

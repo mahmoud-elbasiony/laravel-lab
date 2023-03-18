@@ -2,6 +2,8 @@
 
 @section('title') Show @endsection
 
+
+
 @section('content')
     <div class="card mt-4">
         <div class="card-header">

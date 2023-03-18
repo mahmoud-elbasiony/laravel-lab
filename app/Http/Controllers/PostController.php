@@ -34,6 +34,7 @@ class PostController extends Controller
         return view("post.index",["posts"=>$posts]);
     }
 
+
     public function show(){
         // dd("show");
 
@@ -47,12 +48,15 @@ class PostController extends Controller
         return view("post.show",["post" => $post]);
     }
 
+
+
     public function create(){
         // dd("create");
 
         return view("post.create");
     }
 
+    
     public function edit($id){
         // dd("create");
 
@@ -61,19 +65,16 @@ class PostController extends Controller
     
     public function store(){
         // dd("store");
-        // return redirect('/posts');
         return redirect()->route('posts.index');
         
     }
     public function destroy(){
         // dd("store");
-        // return redirect('/posts');
         return redirect()->route('posts.index');
         
     }
     public function update(){
         // dd("store");
-        // return redirect('/posts');
         return redirect()->route('posts.index');
         
     }
