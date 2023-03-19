@@ -16,20 +16,18 @@ class CommentsController extends Controller
         return redirect()->back();
     }
 
-    public function destroy(Post $post, comment $comment)
+    public function destroy($id)
     {
-        $comment->delete();
+        dd($id);
+        comment::find($id)->delete();
 
-        return redirect()->back();
+        return redirect(null);
     }
-    
+
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+    
 
     /**
      * Show the form for editing the specified resource.

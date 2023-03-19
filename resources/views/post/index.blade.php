@@ -20,7 +20,11 @@
         <td>{{$post->user->name}}</td>
         <td>{{$post->created_at->format('Y-m-d')}}</td>
         <td>
-            <form method="post" action="{{$post->trashed()?route("posts.restore",$post->id):route("posts.destroy",$post->id)}}" 
+            @if (!$post->trashed())
+                    <a class="btn btn-success" href="{{route("posts.show",$post->id)}}">view</a>
+                    <a class="btn btn-primary" href="{{route("posts.edit",$post->id)}}">edit</a>
+                @endif
+            <form method="post" class="{{$post->trashed()?'':'delete_post'}}" action="{{$post->trashed()?route("posts.restore",$post->id):route("posts.destroy",$post->id)}}" 
                 style="display:inline-block;;">
                 @csrf
                 @if ($post->trashed())
@@ -28,8 +32,6 @@
                     <button type="submit" class="btn btn-success" id="restore">restore</button>
                 @else
                     @method("DELETE")
-                    <a class="btn btn-success" href="{{route("posts.show",$post->id)}}">view</a>
-                    <a class="btn btn-primary" href="{{route("posts.edit",$post->id)}}">edit</a>
                     <button type="submit" class="btn btn-danger" id="delete_{{$post->id}}" data-bs-toggle="modal" data-bs-target="#exampleModal">delete</button>
                 @endif
                 </form> 
@@ -44,4 +46,5 @@
     {{-- {{ $posts->links() }} --}}
     {{ $posts->onEachSide(5)->links() }}
     <x-modal />
+    <script src="js/main.js"></script>
 @endsection

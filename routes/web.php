@@ -27,6 +27,7 @@ Route::delete('/posts/{post}', [PostController::class,"destroy"])->name("posts.d
 
 
 
+Route::delete('/comments/{comment}', [PostController::class,"destroy"])->name("comments.destroy");
 
 Route::post('/comments/{post}', [CommentsController::class,"store"])->name("comments.store");
 

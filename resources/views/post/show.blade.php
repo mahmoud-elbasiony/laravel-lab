@@ -50,6 +50,18 @@
             <p class="card-text">{{$comment->created_at}}</p>
 
         </div>
+        <div class="d-flex">
+            <form method="post" action="{{route("comments.destroy",$comment->id)}}" @class(['m-2', 'font-bold' => true])>
+                @csrf
+                @method("DELETE")
+                <button type="submit" class="btn btn-danger" >delete</button>
+            </form>
+            <form method="post" action="{{route("comments.destroy",$comment->id)}}" @class(['m-2', 'font-bold' => true])>
+                @csrf
+                @method("PUT")
+                <button type="submit" class="btn btn-primary" >edit</button>
+            </form>
+        </div>
     </div>
 
     @endforeach
