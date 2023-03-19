@@ -59,7 +59,7 @@ class PostController extends Controller
     }
     
     public function destroy($id){
-        dd("store");
+        // dd("store");
         $post=post::find($id);
         // dd($post);
         $post->delete();
