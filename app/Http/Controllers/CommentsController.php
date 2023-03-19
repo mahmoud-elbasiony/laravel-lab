@@ -18,10 +18,10 @@ class CommentsController extends Controller
 
     public function destroy($id)
     {
-        dd($id);
+        // dd($id);
         comment::find($id)->delete();
 
-        return redirect(null);
+        return redirect()->back();
     }
 
     /**
@@ -40,9 +40,9 @@ class CommentsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        dd($id);
     }
 
     

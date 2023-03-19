@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\PostController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
+
+
+
 Route::get('/', [PostController::class,"index"])->name("posts.index");
 Route::get('/posts', [PostController::class,"index"])->name("posts.index");
 Route::get('/posts/create', [PostController::class,"create"])->name("posts.create");
@@ -26,10 +31,11 @@ Route::put('/posts/{post}/restore', [PostController::class,"restore"])->name("po
 Route::delete('/posts/{post}', [PostController::class,"destroy"])->name("posts.destroy");
 
 
-
-Route::delete('/comments/{comment}', [PostController::class,"destroy"])->name("comments.destroy");
-
 Route::post('/comments/{post}', [CommentsController::class,"store"])->name("comments.store");
+Route::put('/comments/{comment}', [CommentsController::class,"update"])->name("comments.update");
+Route::delete('/comments/{comment}', [CommentsController::class,"destroy"])->name("comments.destroy");
+
+
 
 
 
