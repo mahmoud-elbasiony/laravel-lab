@@ -15,23 +15,33 @@
     <tbody>
         @foreach($posts as $post)
         <tr>
-        <th scope="row">{{$post["id"]}}</th>
-        <td>{{$post["Title"]}}</td>
-        <td>{{$post["posted_by"]}}</td>
-        <td>{{$post["created_at"]}}</td>
+        <th scope="row">{{$post->id}}</th>
+        <td>{{$post->title}}</td>
+        <td>{{$post->user->name}}</td>
+        <td>{{$post->created_at->format('Y-m-d')}}</td>
         <td>
-            <a class="btn btn-success" href="{{route("posts.show",$post["id"])}}">view</a>
-            <a class="btn btn-primary" href="{{route("posts.edit",$post["id"])}}">edit</a>
-            <form method="post" action="{{route("posts.destroy",$post["id"])}}" style="display:inline-block;;">
+            <form method="post" action="{{$post->trashed()?route("posts.restore",$post->id):route("posts.destroy",$post->id)}}" 
+                style="display:inline-block;;">
                 @csrf
-                @method("DELETE")
-                <x-button color="danger" value="delete"/>
-            </form> 
-        </td>
-        @endforeach
+                @if ($post->trashed())
+                    @method("PUT")
+                    <button type="submit" class="btn btn-success" id="restore">restore</button>
+                @else
+                    @method("DELETE")
+                    <a class="btn btn-success" href="{{route("posts.show",$post->id)}}">view</a>
+                    <a class="btn btn-primary" href="{{route("posts.edit",$post->id)}}">edit</a>
+                    <button type="submit" class="btn btn-danger" id="delete_{{$post->id}}" data-bs-toggle="modal" data-bs-target="#exampleModal">delete</button>
+                @endif
+                </form> 
+            </td>
+            @endforeach
+            
+            
         </tr>
         
     </tbody>
     </table>
-
+    {{-- {{ $posts->links() }} --}}
+    {{ $posts->onEachSide(5)->links() }}
+    <x-modal />
 @endsection

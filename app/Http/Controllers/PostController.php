@@ -2,81 +2,84 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\post;
+use App\Models\user;
+use App\Models\comment;
+use Illuminate\Pagination\Paginator;
 
 class PostController extends Controller
 {
     public function index(){
-        // dd("index");
-
-        $posts=[
-            [
-                'id' => 1,
-                'Title' => 'Laravel',
-                'posted_by' => 'Ahmed',
-                'created_at' => '2022-08-01 10:00:00'
-            ],
-
-            [
-                'id' => 2,
-                'Title' => 'PHP',
-                'posted_by' => 'Mohamed',
-                'created_at' => '2022-08-01 10:00:00'
-            ],
-
-            [
-                'id' => 3,
-                'Title' => 'Javascript',
-                'posted_by' => 'Ali',
-                'created_at' => '2022-08-01 10:00:00'
-            ],
-        ];
-        return view("post.index",["posts"=>$posts]);
+        // dd(post::withTrashed()->get());
+        $posts=post::withTrashed()->get();
+        Paginator::useBootstrapFive();
+        return view("post.index",["posts"=>post::withTrashed()->paginate(15)]);
     }
 
 
-    public function show(){
+    public function show($id){
         // dd("show");
-
-        $post =  [
-            'id' => 3,
-            'title' => 'Javascript',
-            'posted_by' => 'Ali',
-            'created_at' => '2022-08-01 10:00:00',
-            'description' => 'hello description',
-        ];
-        return view("post.show",["post" => $post]);
+        $post =  post::find($id);
+        $comments = $post->comments;
+        // dd($comments);
+        return view("post.show",["post" => $post,"comments"=>$comments]);
     }
 
 
 
     public function create(){
         // dd("create");
+        $users=user::all();
 
-        return view("post.create");
+        return view("post.create",["users"=>$users]);
     }
 
     
+    public function store(Request $request){
+        
+        post::create([
+            "title"=>request()->title,
+            "description"=>request()->description,
+            "user_id"=>request()->user_id,
+            "isDeleted"=>0,
+
+        ]);
+        return redirect()->route('posts.index');
+        
+    }
+
     public function edit($id){
         // dd("create");
+        $post =  post::find($id);
+        $users=user::all();
 
-        return view("post.edit",["id"=> $id]);
+        return view("post.edit",["post"=> $post,"users"=>$users ]);
     }
     
-    public function store(){
+    public function destroy($id){
         // dd("store");
+        $post=post::find($id);
+        // dd($post);
+        $post->delete();
         return redirect()->route('posts.index');
         
     }
-    public function destroy(){
-        // dd("store");
+    public function update(Request $request,$id){
+        // dd($id,request()->all());
+        $post = post::find($id);
+        $post->title = request()->title;
+        $post->description = request()->description;
+        $post->user_id = request()->user_id;
+        $post->save();
         return redirect()->route('posts.index');
         
     }
-    public function update(){
-        // dd("store");
+    public function restore($id){
+        $post = post::withTrashed()->find($id);
+        $post->restore();
         return redirect()->route('posts.index');
-        
     }
 
 }
