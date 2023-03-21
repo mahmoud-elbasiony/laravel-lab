@@ -19,8 +19,9 @@ class PostFactory extends Factory
         return [
             'title' => $this->faker->name(),
             'description' => $this->faker->paragraphs(3, true),
-            'user_id' => rand(1, 3),
-            'isDeleted' => rand(0, 1)
+            'user_id' => rand(1, 4),
+            'isDeleted' => 0,
+            'created_at'=>date('Y-m-d H:i:s',rand(1400000000,1670000000))
         ];
     }
 }

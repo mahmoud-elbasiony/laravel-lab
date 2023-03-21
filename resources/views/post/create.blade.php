@@ -1,7 +1,16 @@
 @extends("layouts.app")
 @section("title") create @endsection
 @section("content")
-<form method="post" action="{{route("posts.store")}}">
+@if ($errors->any())
+    <div class="alert alert-danger mt-4">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+<form method="post" action="{{route("posts.store")}}" enctype="multipart/form-data">
 @csrf
 <?php $c="create"; ?>
     <x-forms.input />
