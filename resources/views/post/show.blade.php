@@ -24,47 +24,7 @@
         </div>
     </div>
 
-    <form method="post" class="mt-4" action="{{route("comments.store",$post->id)}}">
-        @csrf
-        <div class="card mb-4">
-            <div class="card-header bg-secondary text-light">
-                comment on post
-            </div>
-            <div class="card-body">
-                <textarea class="form-control" id="exampleFormControlTextarea1" name="body" rows="3" ></textarea>
-            </div>
-        </div>
-        <x-button color="primary" value="send" />
-    </form>
+    @livewire('show-comments',['post' => $post ,"comments"=>$comments])
+    @livewireScripts
     
-    <div class="card my-4">
-    <div class="card-header bg-secondary text-light">
-            comments
-    </div>
-    @foreach($comments as $comment)
-    <div class="card m-2">
-        
-        <div class="card-body bg-dark-subtle">
-
-            <p class="card-text">{{$comment->body}}</p>
-            <p class="card-text">{{$comment->created_at}}</p>
-
-        </div>
-        <div class="d-flex">
-            <form method="post" action="{{route("comments.destroy",$comment->id)}}" @class(['m-2', 'font-bold' => true])>
-                @csrf
-                @method("DELETE")
-                <button type="submit" class="btn btn-danger" >delete</button>
-            </form>
-            <form method="post" action="{{route("comments.destroy",$comment->id)}}" @class(['m-2', 'font-bold' => true])>
-                @csrf
-                @method("PUT")
-                <button type="submit" class="btn btn-primary" >edit</button>
-            </form>
-        </div>
-    </div>
-
-    @endforeach
-    </div>
-
 @endsection

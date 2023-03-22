@@ -10,16 +10,24 @@ class CommentsController extends Controller
 
     public function store(Request $request, $id)
     {
-        post::find($id)->comments()->create([
-            "body"=>request()->body
-        ]);
-        return redirect()->back();
+        
+        return route('livewire.show-comments',["post"=>post::find($id)]);
+        // dd($this);
+        
+        // return view("show-comments");
     }
 
     public function destroy($id)
     {
-        // dd($id);
-        comment::find($id)->delete();
+        $post=comment::find($id);
+        
+        $comment=comment::find($id);
+        $comment->delete();
+        $post->save();
+
+        dd($post);
+        // return route('livewire.show-comments',["post"=>$post]);
+
 
         return redirect()->back();
     }
