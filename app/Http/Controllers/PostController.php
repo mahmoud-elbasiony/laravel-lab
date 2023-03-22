@@ -16,6 +16,7 @@ use \Cviebrock\EloquentSluggable\Services\SlugService;
 class PostController extends Controller
 {
     public function index(){
+        // dd(post::where("user_id",1)->count());
         // dd(date('Y-m-d H:i:s',rand(1400000000,1670000000)));
         // dd(post::withTrashed()->get());
         // $posts=post::withTrashed()->get();

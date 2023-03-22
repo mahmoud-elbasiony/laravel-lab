@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 use App\Models\post;
 use App\Models\user;
+use App\Rules\userMaxPosts;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\File;
@@ -32,7 +33,8 @@ class StorePostRequest extends FormRequest
         ],
             "description" => ["required","min:10"],
             "user_id" => ["required",
-            'exists:users,id'
+            'exists:users,id',
+            new userMaxPosts
         ],
         
         "image"=>[
