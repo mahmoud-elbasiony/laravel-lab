@@ -25,7 +25,8 @@ class StorePostRequest extends FormRequest
      */
     public function rules(): array
     {
-        // dd($this->user_id);
+        // dd($this->post);
+
         return [
             "title" => ["required",
             "min:3",

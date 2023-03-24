@@ -25,9 +25,8 @@
     </div>
     <div class="mb-3">
         <label for="inputPhoto" class="form-label">upload image</label>
-        <input type="file" id="inputPhoto" name="image">
+        <input class="form-control" type="file" id="inputPhoto" name="image">
     </div>
-        
     <label for="exampleFormControlInput1" class="form-label">Post creator</label>
         
     <select class="form-select form-select-lg mb-3" id="exampleFormControlInput1" aria-label=".form-select-lg example" name="user_id">
