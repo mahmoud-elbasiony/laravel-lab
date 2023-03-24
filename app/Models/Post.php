@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Comment;
@@ -14,13 +15,14 @@ class Post extends Model
     use HasFactory;
     use Sluggable;
 
-    protected $fillable=[
+    protected $fillable = [
         "title",
         "description",
         "user_id",
         "isDeleted"
     ];
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
@@ -36,5 +38,12 @@ class Post extends Model
                 'source' => 'title'
             ]
         ];
+    }
+
+    protected function humanReadableDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => date_format($this->created_at, 'l jS \of F Y h:i:s A'),
+        );
     }
 }
