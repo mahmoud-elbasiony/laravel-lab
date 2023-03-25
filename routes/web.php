@@ -4,7 +4,10 @@ use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Auth;
+use App\Models\user;
+use Illuminate\Support\Facades\Hash;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,7 +32,7 @@ Route::group(["middleware" => ["auth"]], function () {
     Route::put('/posts/{post}', [PostController::class, "update"])->name("posts.update");
     Route::put('/posts/{post}/restore', [PostController::class, "restore"])->name("posts.restore");
     Route::delete('/posts/{post}', [PostController::class, "destroy"])->name("posts.destroy");
-    Route::get('api/posts/{post}', [PostController::class, "toResponse"])->name("posts.toResponse");
+    Route::get('/apis/posts/{post}', [PostController::class, "toResponse"])->name("posts.toResponse");
     /** ----------------------------------- end posts route------------------------------------ */
 
     /** ----------------------------------- start comments route------------------------------------ */
@@ -50,6 +53,57 @@ Route::group(["middleware" => ["auth"]], function () {
 
 
 
+
+
+
+Route::get('/auth/redirect/github', function () {
+    return Socialite::driver('github')->redirect();
+});
+
+Route::get('/auth/callback/github', function () {
+    $githubUser = Socialite::driver('github')->user();
+
+    $user = User::where("email", $githubUser->email)->first();
+    // dd($user);
+
+    if (!$user) {
+
+        $user = User::updateOrCreate([
+            'github_id' => $githubUser->id,
+        ], [
+            'name' => $githubUser->name,
+            'email' => $githubUser->email,
+            'github_token' => $githubUser->token,
+            'github_refresh_token' => $githubUser->refreshToken,
+        ]);
+    }
+
+    Auth::login($user);
+    return redirect('/');
+});
+
+Route::get('/auth/redirect/gmail', function () {
+    return Socialite::driver('google')->redirect();;
+});
+
+Route::get('/auth/callback/gmail', function () {
+    $googleUser = Socialite::driver('google')->user();
+    // dd($googleUser);
+    $user = User::where("google_token", $googleUser->email)->first();
+    if (!$user) {
+        $user = User::updateOrCreate([
+            'google_id' => $googleUser->id,
+        ], [
+            'name' => $googleUser->name,
+            'email' => $googleUser->email,
+            'google_token' => $googleUser->token,
+            'google_refresh_token' => $googleUser->refreshToken,
+        ]);
+    }
+
+    Auth::login($user);
+    return redirect('/');
+});
 
 
 
